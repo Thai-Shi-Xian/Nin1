@@ -49,15 +49,15 @@ namespace VPE
 					List<uint> fileNums = new();
 					foreach (string file in myFiles)
 					{
-						fileName = Path.GetFileName(myFiles.First());
-						ReadOnlySpan<char> onlyFileName = fileName.AsSpan(0, fileName.Length - 6);
+						fileName = Path.GetFileName(file);
+						string onlyFileName = fileName.AsSpan(0, fileName.Length - 6).ToString();
 						if (uint.TryParse(onlyFileName, out uint name))
 						{
 							fileNums.Add(name);
 						}
 					}
 					fileNums = fileNums.OrderBy(x => x).ToList();
-					for (uint i = 0; i < fileNums.Max(); i++)
+					for (uint i = 0; i <= fileNums.Max() + 1; i++)
 					{
 						if (fileNums.Contains(i))
 						{
