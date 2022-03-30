@@ -16,10 +16,16 @@ namespace GUI
 		private ushort PozitionString { get; set; }
 		public ushort Pozition { get; private set; }
 		public ushort SelTable { get; private set; }
+
 		private C_UC_Table Representation = new();
 		public UC_Table()
 		{
 			InitializeComponent();
+		}
+
+		public void UpdateTableList (List<ushort> tables)
+		{
+			Representation.Table = tables;
 		}
 	}
 }

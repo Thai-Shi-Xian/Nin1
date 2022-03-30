@@ -9,9 +9,9 @@ namespace GUI
 {
 	public class C_UC_Table : INotifyPropertyChanged
 	{
-		private ushort PozitionV;
-		private ushort TableV;
-        public ushort Pozition
+		private string PozitionV;
+		private List<ushort> TableV = new();
+        public string Pozition
 		{
             get
             {
@@ -27,7 +27,7 @@ namespace GUI
             }
 		}
 
-        public ushort Table
+        public List<ushort> Table
         {
             get
             {

@@ -11,7 +11,13 @@
 			<ColumnDefinition Width="3*"/>
 			<ColumnDefinition Width="2*"/>
 		</Grid.ColumnDefinitions>
-		<ComboBox x:Name="CB_TableSel" Grid.Column="0" Margin="2, 2, 1, 2"/>
-		<TextBox x:Name="TB_Poz" Grid.Column="1" Margin="1, 2, 2, 2"/>
+		<Grid.Resources>
+			<local:C_UC_Table x:Key="Representation"/>
+		</Grid.Resources>
+		<Grid.DataContext>
+			<Binding Source="{StaticResource Representation}"/>
+		</Grid.DataContext>
+		<ComboBox x:Name="CB_TableSel" Grid.Column="0" Margin="2, 2, 1, 2" ItemsSource="{Binding Path = Table, Mode = OneWay}"/>
+		<TextBox x:Name="TB_Poz" Grid.Column="1" Margin="1, 2, 2, 2" Text="{Binding Path=Pozition, Mode=OneWayToSource}"/>
 	</Grid>
 </UserControl>
