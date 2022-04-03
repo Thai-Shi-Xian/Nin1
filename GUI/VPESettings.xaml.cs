@@ -53,6 +53,10 @@ namespace GUI
 		private void B_GenTables_Click (object sender, RoutedEventArgs e)
 		{
 			VPE?.GenerateTables ();
+			foreach (UC_Table table in SP_Tables.Children)
+			{
+				
+			}
 		}
 
 		private void B_GenRefl_Click (object sender, RoutedEventArgs e)
@@ -128,13 +132,17 @@ namespace GUI
 
 		private void B_Add_Shift(object sender, RoutedEventArgs e)
 		{
-			VPE.Add_Shift();
-
+			VPE?.Add_Shift();
 		}
 
 		private void B_Substract_Shift(object sender, RoutedEventArgs e)
 		{
-			VPE.Substract_Shift();
+			VPE?.Substract_Shift();
+		}
+
+		private void B_GenerateRandShift(object sender, RoutedEventArgs e)
+		{
+			VPE?.GenerateRandShift();
 		}
 		#endregion
 	}

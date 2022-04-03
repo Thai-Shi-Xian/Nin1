@@ -5,31 +5,45 @@
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:GUI"
 		mc:Ignorable="d"
-		Title="VPE Settings" Height="420" Width="630">
+		Title="VPE Settings" Height="500" Width="840">
 	<Window.Resources>
 
 	</Window.Resources>
 	<Grid>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="1*"/>
-			<ColumnDefinition Width="1*"/>
-			<ColumnDefinition Width="1*"/>
+			<ColumnDefinition Width="5*"/>
+			<ColumnDefinition Width="3*"/>
+			<ColumnDefinition Width="4*"/>
+			<ColumnDefinition Width="4*"/>
 		</Grid.ColumnDefinitions>
-		<GroupBox x:Name="GB_Tables" Grid.Column="0" Header="Tables settings">
+		<GroupBox x:Name="GB_Tables" Grid.Column="0" Header="Tables settings" Grid.RowSpan="2">
 			<Grid>
 				<Grid.RowDefinitions>
+					<RowDefinition Height="20 px"/>
 					<RowDefinition Height="1*"/>
 					<RowDefinition Height="20 px"/>
 				</Grid.RowDefinitions>
-				<StackPanel x:Name="SP_Tables" Grid.Row="0">
+				<Grid Grid.Row="0">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="3*"/>
+						<ColumnDefinition Width="2*"/>
+						<ColumnDefinition Width="3*"/>
+					</Grid.ColumnDefinitions>
+					<TextBlock Grid.Column="0" Text="Table"/>
+					<TextBlock Grid.Column="1" Text="Pozition"/>
+				</Grid>
+				<StackPanel x:Name="SP_Tables" Grid.Row="1" Orientation="Vertical">
 					<local:UC_Table x:Name="UCT_0"/>
 					<local:UC_Table x:Name="UCT_1"/>
 					<local:UC_Table x:Name="UCT_2"/>
 					<local:UC_Table x:Name="UCT_3"/>
 					<local:UC_Table x:Name="UCT_4"/>
 				</StackPanel>
-				<Button x:Name="B_Tables_Add" Grid.Row="1" Content="Add" HorizontalAlignment="Left" MinWidth="70" Click="B_Tables_Add_Click"/>
-				<Button x:Name="B_Tables_Remove" Grid.Row="1" Content="Remove" HorizontalAlignment="Right" MinWidth="70" Click="B_Tables_Remove_Click"/>
+				<StackPanel Grid.Row="2" Orientation="Horizontal">
+					<Button x:Name="B_Tables_Add" Content="Add" HorizontalAlignment="Left" Click="B_Tables_Add_Click" Margin="4, 0, 2, 0" Padding="2, 0, 2, 0"/>
+					<Button x:Name="B_Tables_Rand_shift" Content="Random Shifts" Margin="2, 0, 2, 0" Padding="2, 0, 2, 0"/>
+					<Button x:Name="B_Tables_Remove" Content="Remove" HorizontalAlignment="Right" Click="B_Tables_Remove_Click" Margin="2, 0, 4, 0" Padding="2, 0, 2, 0"/>
+				</StackPanel>
 			</Grid>
 		</GroupBox>
 		<GroupBox x:Name="GB_Swaps" Grid.Column="1" Header="Swap settings">
@@ -39,46 +53,49 @@
 					<RowDefinition Height="20 px"/>
 				</Grid.RowDefinitions>
 				<StackPanel x:Name="SP_Swaps" Grid.Row="0">
-					<ComboBox x:Name="CB_Swap_0" Grid.Column="0" Grid.Row="0" Margin="4"/>
-					<ComboBox x:Name="CB_Swap_1" Grid.Column="0" Grid.Row="1" Margin="4"/>
-					<ComboBox x:Name="CB_Swap_2" Grid.Column="0" Grid.Row="2" Margin="4"/>
+					<ComboBox x:Name="CB_Swap_0" Grid.Column="0" Grid.Row="0" Margin="4, 4, 4, 0"/>
+					<ComboBox x:Name="CB_Swap_1" Grid.Column="0" Grid.Row="1" Margin="4, 4, 4, 0"/>
+					<ComboBox x:Name="CB_Swap_2" Grid.Column="0" Grid.Row="2" Margin="4, 4, 4, 0"/>
 				</StackPanel>
-				<Button x:Name="B_Swaps_Add" Grid.Row="1" Content="Add" HorizontalAlignment="Left" MinWidth="70" Click="B_Swaps_Add_Click"/>
-				<Button x:Name="B_Swaps_Remove" Grid.Row="1" Content="Remove" HorizontalAlignment="Right" MinWidth="70" Click="B_Swaps_Remove_Click"/>
+				<StackPanel Grid.Row="1" Orientation="Horizontal">
+					<Button x:Name="B_Swaps_Add" Grid.Row="1" Content="Add" HorizontalAlignment="Left" Click="B_Swaps_Add_Click" Margin="4, 0, 2, 0" Padding="2, 0, 2, 0"/>
+					<Button x:Name="B_Swaps_Remove" Grid.Row="1" Content="Remove" HorizontalAlignment="Right" Click="B_Swaps_Remove_Click" Margin="2, 0, 4, 0" Padding="2, 0, 2, 0"/>
+				</StackPanel>
 			</Grid>
 		</GroupBox>
 		<Grid Grid.Column="2">
 			<Grid.RowDefinitions>
-				<RowDefinition Height="1*" MinHeight="80 px"/>
-				<RowDefinition Height="1*" MinHeight="60 px"/>
-				<RowDefinition Height="1*" MinHeight="110 px"/>
+				<RowDefinition Height="55 px"/>
 				<RowDefinition Height="1*"/>
-				<RowDefinition Height="35 px"/>
+				<RowDefinition Height="1*"/>
+				<RowDefinition Height="1*"/>
 			</Grid.RowDefinitions>
-			<GroupBox Grid.Row="0" Header="Shift">
+			<GroupBox Grid.Row="0" Header="Reflector">
+				<StackPanel>
+					<ComboBox x:Name="CB_Reflector" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,5,0,5" Height="21"/>
+				</StackPanel>
+			</GroupBox>
+			<GroupBox Grid.Row="1" Header="Shift">
 				<StackPanel>
 					<StackPanel Orientation="Horizontal">
 						<TextBox x:Name="TB_Shift" Width="50"/>
-						<Button x:Name="B_Shift_P" Content=" + " Margin="5, 0, 0, 0" MinWidth="20" Click="B_Add_Shift"/>
-						<Button x:Name="B_Shift_N" Content=" – " Margin="5, 0, 0, 0" MinWidth="20" Click="B_Substract_Shift"/>
+						<Button x:Name="B_Random" Content="Random" HorizontalAlignment="Right" Margin="3" Click="B_GenerateRandShift"/>
 					</StackPanel>
-					<Button x:Name="B_Random" Content="Generate random" HorizontalAlignment="Right" Margin="3"/>
 				</StackPanel>
 			</GroupBox>
-			<GroupBox Grid.Row="1" Header="Reflector">
-				<StackPanel>
-					<ComboBox x:Name="CB_Reflector" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,5,0,5" Height="21"/>
-
-				</StackPanel>
+			<GroupBox Grid.Row="2" Header="Variable shift">
 			</GroupBox>
-			<GroupBox Grid.Row="2" Header="Generators">
-				<StackPanel>
-					<Button x:Name="B_GenTables" Content="Generate tables" Grid.Column="0" Grid.Row="0" Margin="5" Click="B_GenTables_Click"/>
-					<Button x:Name="B_GenRefl" Content="Generate reflectors" Grid.Column="0" Grid.Row="1" Margin="5" Click="B_GenRefl_Click"/>
-					<Button x:Name="B_GenSwaps" Content="Generate swaps" Grid.Column="0" Grid.Row="2" Margin="5" Click="B_GenSwaps_Click"/>
-				</StackPanel>
+			<GroupBox Grid.Row="3" Header="Frequency of random chars">
 			</GroupBox>
-			<GroupBox Grid.Row="3" Header="File storage">
+		</Grid>
+		<Grid Grid.Column="3">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="1*"/>
+				<RowDefinition Height="1*"/>
+				<RowDefinition Height="1*"/>
+				<RowDefinition Height="1*"/>
+			</Grid.RowDefinitions>
+			<GroupBox Grid.Row="0" Header="Settings storage">
 				<StackPanel>
 					<StackPanel Orientation="Horizontal">
 						<Button x:Name="B_Save" Content="Save" Margin="2" Click="B_Save_Click"/>
@@ -87,7 +104,29 @@
 					<Button x:Name="B_LoadMerge" Content="Load and merge" Margin="2" Click="B_LoadMerge_Click"/>
 				</StackPanel>
 			</GroupBox>
-			<Button x:Name="B_Submit" Grid.Row="4" Content="Submit" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="B_Submit_Click" Margin="2" Height="25px" Width="100px"/>
+			<GroupBox Grid.Row="1" Header="Current settings">
+				<StackPanel>
+					<Button x:Name="B_Export_Current" Content="Export current settings to a file" Margin="4, 4, 4, 2"/>
+					<Button x:Name="B_Import_Current" Content="Import settings from a file" Margin="4, 2, 4, 4"/>
+				</StackPanel>
+			</GroupBox>
+			<GroupBox Grid.Row="2" Header="Generators">
+				<StackPanel>
+					<Button x:Name="B_GenTables" Content="Generate tables" Grid.Column="0" Grid.Row="0" Margin="4, 4, 4, 2" Click="B_GenTables_Click"/>
+					<Button x:Name="B_GenRefl" Content="Generate reflectors" Grid.Column="0" Grid.Row="1" Margin="4, 2, 4, 2" Click="B_GenRefl_Click"/>
+					<Button x:Name="B_GenSwaps" Content="Generate swaps" Grid.Column="0" Grid.Row="2" Margin="4, 2, 4, 4" Click="B_GenSwaps_Click"/> 
+				</StackPanel>
+			</GroupBox>
+			<GroupBox Grid.Row="3" Header="Misc">
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="1*"/>
+						<RowDefinition Height="30 px"/>
+					</Grid.RowDefinitions>
+					<Button x:Name="B_All_RND" Grid.Row="0" Content="All settings random" HorizontalAlignment="Left" VerticalAlignment="Top" Click="B_Submit_Click" Margin="2"/>
+					<Button x:Name="B_Submit" Grid.Row="1" Content="Submit" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="B_Submit_Click" Margin="2" Height="25px" Width="100px"/>
+				</Grid>
+			</GroupBox>
 		</Grid>
 	</Grid>
 </Window>

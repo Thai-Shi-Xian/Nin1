@@ -27,5 +27,10 @@ namespace GUI
 		{
 			Representation.Table = tables;
 		}
+
+		private void B_Rand_Shift_Click (object sender, RoutedEventArgs e)
+		{
+
+		}
 	}
 }

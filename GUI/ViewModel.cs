@@ -18,6 +18,9 @@ namespace GUI
 		private Settings Selected;
 		private Crypto C;
 		private ushort TableCNTR = 0, ReflCNTR = 0, SwapCNTR = 0, Shift = 0;
+		public List<ushort> Tables = new();
+		public List<ushort> Refls = new();
+		public List<ushort> Swaps = new();
 
 		public void GenerateTables(uint count = 10)
 		{
@@ -95,6 +98,12 @@ namespace GUI
 			{
 				Shift--;
 			}
+		}
+
+		public void GenerateRandShift()
+		{
+			Generator.UpdateSeed(DateTime.Now.Ticks);
+			Shift = (ushort)(Generator.GenerateNum() % Codepage.Limit);
 		}
 
 		internal string Encrypt(string inText)

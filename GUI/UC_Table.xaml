@@ -5,11 +5,12 @@
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 			 xmlns:local="clr-namespace:GUI"
 			 mc:Ignorable="d" 
-			 d:DesignHeight="25" d:DesignWidth="100">
+			 d:DesignHeight="25" d:DesignWidth="160">
 	<Grid Background="#F7F7F7">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="3*"/>
 			<ColumnDefinition Width="2*"/>
+			<ColumnDefinition Width="3*"/>
 		</Grid.ColumnDefinitions>
 		<Grid.Resources>
 			<local:C_UC_Table x:Key="Representation"/>
@@ -18,6 +19,7 @@
 			<Binding Source="{StaticResource Representation}"/>
 		</Grid.DataContext>
 		<ComboBox x:Name="CB_TableSel" Grid.Column="0" Margin="2, 2, 1, 2" ItemsSource="{Binding Path = Table, Mode = OneWay}"/>
-		<TextBox x:Name="TB_Poz" Grid.Column="1" Margin="1, 2, 2, 2" Text="{Binding Path=Pozition, Mode=OneWayToSource}"/>
+		<TextBox x:Name="TB_Poz" Grid.Column="1" Margin="1, 2, 1, 2" Text="{Binding Path=Pozition, Mode=TwoWay}"/>
+		<Button x:Name="B_Rand_Shift" Content="Random" Click="B_Rand_Shift_Click" Grid.Column="2" Margin="1, 2, 2, 2"/>
 	</Grid>
 </UserControl>
