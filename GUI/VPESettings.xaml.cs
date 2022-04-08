@@ -24,6 +24,7 @@ namespace GUI
 		private readonly VPE_VM VPE;
 		private ushort TablesInGUI = 0, SwapsInGUI = 0;
 		private const ushort TablesMax = 20, SwapsMax = 20; // Kolik tam může být maximálně tabulek a swapů, v GUI.
+		public C_VPE_Sett DataFromGUI = new();
 		public VPESettings (ref VPE_VM VModel)
 		{
 			InitializeComponent ();
@@ -32,28 +33,14 @@ namespace GUI
 		#region GUI eventy
 		private void B_Submit_Click (object sender, RoutedEventArgs e)
 		{ // ToDo: This whole method is just one big to do.
-			List<ushort> tables = new();
-			List<ushort> pozitions = new();
-			foreach (UC_Table table in SP_Tables.Children)
-			{
-				tables.Add (table.SelTable);
-				pozitions.Add(table.Pozition);
-			}
-			List<ushort> swaps = new();
-			foreach (ComboBox swap in SP_Swaps.Children)
-			{
-				swaps.Add ((ushort)swap.SelectedItem);
-			}
-			ushort reflector = (ushort)CB_Reflector.SelectedItem;// ToDo: make it safe/working!
-			ushort shift = ushort.Parse(TB_Shift.Text); // ToDo: make it safe!
-			VPE?.SelectSettings(tables, pozitions, swaps, reflector, shift);
+			
 			Close ();
 		}
 
-		private void B_GenTables_Click (object sender, RoutedEventArgs e)
+		private void B_GenRotors_Click (object sender, RoutedEventArgs e)
 		{
-			VPE?.GenerateTables ();
-			foreach (UC_Table table in SP_Tables.Children)
+			VPE?.GenerateRotors ();
+			foreach (UC_Table table in SP_Rotors.Children)
 			{
 				
 			}
@@ -69,26 +56,26 @@ namespace GUI
 			VPE?.GenerateSwaps ();
 		}
 
-		private void B_Tables_Add_Click(object sender, RoutedEventArgs e)
+		private void B_Rotors_Add_Click(object sender, RoutedEventArgs e)
 		{
-			TablesInGUI = Convert.ToUInt16(SP_Tables.Children.Count);
+			TablesInGUI = Convert.ToUInt16(SP_Rotors.Children.Count);
 			if (TablesInGUI < TablesMax)
 			{
 				UC_Table table = new()
 				{
 					Name = "UCT_" + (TablesInGUI - 1).ToString(),
 				};
-				SP_Tables.Children.Add(table);
-				B_Tables_Add.IsEnabled = TablesInGUI < TablesMax;
+				SP_Rotors.Children.Add(table);
+				B_Rotors_Add.IsEnabled = TablesInGUI < TablesMax;
 			}
 		}
 
-		private void B_Tables_Remove_Click(object sender, RoutedEventArgs e)
+		private void B_Rotors_Remove_Click(object sender, RoutedEventArgs e)
 		{
-			if (SP_Tables.Children.Count > 0)
+			if (SP_Rotors.Children.Count > 0)
 			{
-				SP_Tables.Children.RemoveAt(SP_Tables.Children.Count - 1);
-				B_Tables_Remove.IsEnabled = SP_Tables.Children.Count > 0;
+				SP_Rotors.Children.RemoveAt(SP_Rotors.Children.Count - 1);
+				B_Rotors_Remove.IsEnabled = SP_Rotors.Children.Count > 0;
 			}
 		}
 
@@ -117,12 +104,12 @@ namespace GUI
 
 		private void B_Save_Click(object sender, RoutedEventArgs e)
 		{
-			VPE?.Save();
+			VPE?.SaveAll();
 		}
 
 		private void B_Load_Click(object sender, RoutedEventArgs e)
 		{
-			VPE.Load();
+			VPE.LoadAll();
 		}
 
 		private void B_LoadMerge_Click(object sender, RoutedEventArgs e)
@@ -130,19 +117,19 @@ namespace GUI
 			VPE.LoadAndMerge();
 		}
 
-		private void B_Add_Shift(object sender, RoutedEventArgs e)
+		private void B_GenerateConstShift(object sender, RoutedEventArgs e)
 		{
-			VPE?.Add_Shift();
+			VPE?.GenerateRandNum();
 		}
 
-		private void B_Substract_Shift(object sender, RoutedEventArgs e)
+		private void B_GenerateVarShift(object sender, RoutedEventArgs e)
 		{
-			VPE?.Substract_Shift();
+			VPE?.GenerateRandNum();
 		}
 
-		private void B_GenerateRandShift(object sender, RoutedEventArgs e)
+		private void B_RandChars(object sender, RoutedEventArgs e)
 		{
-			VPE?.GenerateRandShift();
+			VPE?.GenerateRandNum();
 		}
 		#endregion
 	}

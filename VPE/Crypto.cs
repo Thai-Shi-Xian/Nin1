@@ -129,7 +129,7 @@ namespace VPE
 		/// <param name="Numbers">Èísla na zamíchání.</param>
 		private void Scramble(ref List<ushort> Numbers)
 		{
-			ushort[] Positions = Sett.Positions;
+			ushort[] Positions = Sett.Pozitions;
 			for (int i = 0; i < Numbers.Count; i++)
 			{
 				Numbers[i] = ForwardScramble(Numbers[i], Positions); // Dopøedný prùchod.
@@ -144,7 +144,7 @@ namespace VPE
 		/// <param name="Numbers">Èísla na odzamíchání.</param>
 		private void Unscramble(ref List<ushort> Numbers)
 		{
-			ushort[] Positions = Sett.Positions;
+			ushort[] Positions = Sett.Pozitions;
 			for (int i = 0; i < Numbers.Count; i++)
 			{
 				Numbers[i] = BackwardScramble(Numbers[i], Positions);
@@ -161,7 +161,7 @@ namespace VPE
 		{
 			for (int i = 0; Numbers.Count > 0; i++)
 			{
-				Numbers[i] += Sett.Shift;
+				Numbers[i] += Sett.ConstShift;
 				Numbers[i] %= Codepage.Limit;
 			}
 		}
@@ -171,7 +171,7 @@ namespace VPE
 		{
 			for (int i = 0; Numbers.Count > 0; i++)
 			{
-				Numbers[i] -= Sett.Shift;
+				Numbers[i] -= Sett.ConstShift;
 				Numbers[i] %= Codepage.Limit;
 			}
 		}
@@ -203,11 +203,11 @@ namespace VPE
 		/// <returns>Znak po prùchodu všemi tabulkami.</returns>
 		private ushort ForwardScramble(ushort Number, ushort[] Positions)
 		{
-			for (int i = 0; i < Sett.Tables.Count; i++)
+			for (int i = 0; i < Sett.Rotors.Count; i++)
 			{
 				int Sum = i == 0 ? Number + Positions[i] : Number + (Positions[i] - Positions[i - 1]); // Kalkulace pozice po vstupu do tabulky.
 				ushort Remain = (ushort)(Sum % Codepage.Limit); // Zùstání v rozsahu.
-				Number = Sett.Tables[i].FindValueUsingIndex(Remain); // Prùchod tabulkou.
+				Number = Sett.Rotors[i].FindValueUsingIndex(Remain); // Prùchod tabulkou.
 			}
 			return Number;
 		}
@@ -239,11 +239,11 @@ namespace VPE
 		/// <returns>Znak po prùchodu všemi tabulkami.</returns>
 		private ushort BackwardScramble(ushort Number, ushort[] Positions)
 		{
-			for (int i = Sett.Tables.Count - 1; i >= 0; i--)
+			for (int i = Sett.Rotors.Count - 1; i >= 0; i--)
 			{
-				int Sum = i == (Sett.Tables.Count - 1) ? Number + Positions[i] : Number + (Positions[i] - Positions[i + 1]);
+				int Sum = i == (Sett.Rotors.Count - 1) ? Number + Positions[i] : Number + (Positions[i] - Positions[i + 1]);
 				ushort Remain = (ushort)(Sum % Codepage.Limit);
-				Number = Sett.Tables[i].FindIndexUsingValue(Remain);
+				Number = Sett.Rotors[i].FindIndexUsingValue(Remain);
 			}
 			return Number;
 		}
@@ -269,7 +269,7 @@ namespace VPE
 		/// <returns>Velikost mezery.</returns>
 		private ushort CalculateRandomFrequency ()
 		{
-			ushort Frequency = Sett.Shift;
+			ushort Frequency = Sett.ConstShift;
 			while (Frequency < (Codepage.Limit / 2) + 1)
 			{
 				Frequency = Convert.ToUInt16 (Math.Pow(Frequency, 2) % Codepage.Limit);
@@ -282,7 +282,7 @@ namespace VPE
 		{
 			Generators Gen = new (Codepage.Limit, DateTime.Now.Ticks);
 			ushort Space = CalculateRandomFrequency();
-			for (int i = Sett.Shift; i <= Numbers.Count; i += Space)
+			for (int i = Sett.ConstShift; i <= Numbers.Count; i += Space)
 			{
 				Numbers.Insert(i, Gen.GenerateNum());
 			}
@@ -292,7 +292,7 @@ namespace VPE
 		private void RemoveRandomChars(ref List<ushort> Numbers)
 		{
 			ushort Space = CalculateRandomFrequency();
-			for (int i = Sett.Shift; i <= Numbers.Count; i += Space)
+			for (int i = Sett.ConstShift; i <= Numbers.Count; i += Space)
 			{
 				Numbers.RemoveAt(i);
 			}

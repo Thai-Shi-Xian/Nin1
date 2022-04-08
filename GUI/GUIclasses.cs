@@ -54,36 +54,217 @@ namespace GUI
 		}
 	}
 
-	public class VPE_Sett : INotifyPropertyChanged
+	public class C_VPE_Sett : INotifyPropertyChanged
 	{
-		private string ShiftStrV;
-		private ushort ShiftNumV;
-		public string ShiftStr
+		private List<ushort> SwapsV = new();
+		private List<ushort> ReflsV = new();
+		private string ConstShiftStrV;
+		private string VarShiftStrV;
+		private string RandCharFreqStrV;
+		private string RotorGenCountStrV;
+		private string SwapGenCountStrV;
+		private string ReflGenCountStrV;
+		public string ConstShiftStr
 		{
 			get
 			{
-				return ShiftStrV;
+				return ConstShiftStrV;
 			}
 			set
 			{
-				if (ShiftStrV != value)
+				if (ConstShiftStrV != value)
 				{
-					ShiftStrV = value;
-					OnPropertyChanged("ShiftStr");
+					ConstShiftStrV = value;
+					OnPropertyChanged("ConstShiftStr");
 				}
 			}
 		}
-		public ushort ShiftNum
+		public ushort? ConstShiftNum
 		{
 			get
 			{
-				if (ushort.TryParse(ShiftStrV, out ushort shiftNum))
+				if (ushort.TryParse(ConstShiftStrV, out ushort shiftNum))
 				{
 					return shiftNum;
 				}
 				else
 				{
-					return ushort.MaxValue;
+					return null; // Neplatné číslo.
+				}
+			}
+		}
+		public string VarShiftStr
+		{
+			get
+			{
+				return VarShiftStrV;
+			}
+			set
+			{
+				if (VarShiftStrV != value)
+				{
+					VarShiftStrV = value;
+					OnPropertyChanged("VarShiftStr");
+				}
+			}
+		}
+		public ushort? VarShiftNum
+		{
+			get
+			{
+				if (ushort.TryParse(VarShiftStrV, out ushort shiftNum))
+				{
+					return shiftNum;
+				}
+				else
+				{
+					return null; // Neplatné číslo.
+				}
+			}
+		}
+		public string RandCharFreqStr
+		{
+			get
+			{
+				return RandCharFreqStrV;
+			}
+			set
+			{
+				if (RandCharFreqStrV != value)
+				{
+					RandCharFreqStrV = value;
+					OnPropertyChanged("RandCharFreqStr");
+				}
+			}
+		}
+		public ushort? RandCharFreqNum
+		{
+			get
+			{
+				if (ushort.TryParse(RandCharFreqStrV, out ushort shiftNum))
+				{
+					return shiftNum;
+				}
+				else
+				{
+					return null; // Neplatné číslo.
+				}
+			}
+		}
+		public string RotorGenCountStr
+		{
+			get
+			{
+				return RotorGenCountStrV;
+			}
+			set
+			{
+				if (RotorGenCountStrV != value)
+				{
+					RotorGenCountStrV = value;
+					OnPropertyChanged("RotorGenCountStr");
+				}
+			}
+		}
+		public ushort? RotorGenCountNum
+		{
+			get
+			{
+				if (ushort.TryParse(RotorGenCountStrV, out ushort shiftNum))
+				{
+					return shiftNum;
+				}
+				else
+				{
+					return null; // Neplatné číslo.
+				}
+			}
+		}
+		public string SwapGenCountStr
+		{
+			get
+			{
+				return SwapGenCountStrV;
+			}
+			set
+			{
+				if (SwapGenCountStrV != value)
+				{
+					SwapGenCountStrV = value;
+					OnPropertyChanged("SwapGenCountStr");
+				}
+			}
+		}
+		public ushort? SwapGenCountNum
+		{
+			get
+			{
+				if (ushort.TryParse(SwapGenCountStrV, out ushort shiftNum))
+				{
+					return shiftNum;
+				}
+				else
+				{
+					return null; // Neplatné číslo.
+				}
+			}
+		}
+		public string ReflGenCountStr
+		{
+			get
+			{
+				return ReflGenCountStrV;
+			}
+			set
+			{
+				if (ReflGenCountStrV != value)
+				{
+					ReflGenCountStrV = value;
+					OnPropertyChanged("ReflGenCountStr");
+				}
+			}
+		}
+		public ushort? ReflGenCountNum
+		{
+			get
+			{
+				if (ushort.TryParse(ReflGenCountStrV, out ushort shiftNum))
+				{
+					return shiftNum;
+				}
+				else
+				{
+					return null; // Neplatné číslo.
+				}
+			}
+		}
+		public List<ushort> Swaps
+		{
+			get
+			{
+				return SwapsV;
+			}
+			set
+			{
+				if (SwapsV != value)
+				{
+					SwapsV = value;
+					OnPropertyChanged("Swaps");
+				}
+			}
+		}
+		public List<ushort> Refls
+		{
+			get
+			{
+				return ReflsV;
+			}
+			set
+			{
+				if (ReflsV != value)
+				{
+					ReflsV = value;
+					OnPropertyChanged("Refls");
 				}
 			}
 		}

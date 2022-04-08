@@ -15,19 +15,20 @@ namespace GUI
 	{
 		private Generators Generator = new(Codepage.Limit, DateTime.Now.Ticks);
 		private SettingsStorage SS = new();
-		private Settings Selected;
+		private Settings S;
 		private Crypto C;
-		private ushort TableCNTR = 0, ReflCNTR = 0, SwapCNTR = 0, Shift = 0;
-		public List<ushort> Tables = new();
+		private const string VPESS_filter = "VPE Settings Storage files (*.vpess)|*.vpess";
+		private const string VPES_filter = "VPE Settings files (*.vpes)|*.vpes";
+		private ushort TableCNTR = 0, ReflCNTR = 0, SwapCNTR = 0;
 		public List<ushort> Refls = new();
 		public List<ushort> Swaps = new();
 
-		public void GenerateTables(uint count = 10)
+		public void GenerateRotors(uint count = 10)
 		{
 			for (uint i = 0; i < count; i++)
 			{
 				Generator.UpdateSeed(DateTime.Now.Ticks);
-				SS.Tables.Add(Generator.GenerateTable(TableCNTR));
+				SS.Rotors.Add(Generator.GenerateTable(TableCNTR));
 				TableCNTR++;
 			}
 		}
@@ -52,82 +53,89 @@ namespace GUI
 			}
 		}
 
-		internal void SelectSettings(List<ushort> tables, List<ushort> pozitions, List<ushort> swaps, ushort reflector, ushort shift)
+		public void SelectSettings(List<ushort> tables, List<ushort> swaps, ushort reflector)
 		{
-			Selected = SS.Select(tables, pozitions, swaps, reflector, shift);
+			S = SS.Select(tables, swaps, reflector);
 		}
 
-		public void Load()
+		public void LoadAll()
 		{
-			SS = FileHandling.ReadAll(GetPath());
+			SS = FileHandling.ReadAll(OpenFile(VPESS_filter));
 		}
 
 		public void LoadAndMerge()
 		{
-			SS.Merge(FileHandling.ReadAll(GetPath()));
+			SS.Merge(FileHandling.ReadAll(OpenFile(VPESS_filter)));
 		}
 
-		public void Save()
+		public void LoadSpecific()
 		{
-			string folder = GetFolder(GetPath());
+			S = FileHandling.ReadSpecific(OpenFile(VPES_filter));
+		}
+
+		public void SaveAll()
+		{
+			string folder = GetFolder(SaveFile(VPESS_filter));
 			if (folder != "N/A")
 			{
 				FileHandling.Save(SS, folder);
 			}
 		}
 
-		public void Add_Shift()
+		public void SaveSpecific()
 		{
-			if (Shift == (Codepage.Limit - 1))
+			string folder = GetFolder(SaveFile(VPES_filter));
+			if (folder != "N/A")
 			{
-				Shift = 0;
-			}
-			else
-			{
-				Shift++;
+				FileHandling.Save(SS, folder);
 			}
 		}
 
-		public void Substract_Shift()
-		{
-			if (Shift == 0)
-			{
-				Shift = (ushort)(Codepage.Limit - 1);
-			}
-			else
-			{
-				Shift--;
-			}
-		}
-
-		public void GenerateRandShift()
+		public ushort GenerateRandNum()
 		{
 			Generator.UpdateSeed(DateTime.Now.Ticks);
-			Shift = (ushort)(Generator.GenerateNum() % Codepage.Limit);
+			return Generator.GenerateNum();
 		}
 
-		internal string Encrypt(string inText)
+		public string Encrypt(string inText)
 		{
-			C = new(Selected);
+			C = new(S);
 			return C?.Encypt(inText);
 		}
 
-		internal string Decrypt(string inText)
+		public string Decrypt(string inText)
 		{
-			C = new(Selected);
+			C = new(S);
 			return C?.Decypt(inText);
 		}
 
-		private string GetPath()
+		private string OpenFile(string ext)
 		{
 			string path = "N/A";
 			OpenFileDialog OFD = new();
+			OFD.Filter = ext;
 			bool? dia = OFD.ShowDialog();
 			if (dia is not null)
 			{
 				if (dia.Value)
 				{
 					path = OFD.FileName;
+				}
+			}
+			return path;
+		}
+
+		private string SaveFile(string ext)
+		{
+			string path = "N/A";
+			SaveFileDialog SFD = new();
+			SFD.Filter = ext;
+			bool? dia = SFD.ShowDialog();
+			if (dia is not null)
+			{
+				if (dia.Value)
+				{
+					path = SFD.FileName;
 				}
 			}
 			return path;

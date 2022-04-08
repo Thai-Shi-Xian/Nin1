@@ -179,12 +179,13 @@ namespace VPE
 			"\t",
 			"\r\n",
 		};
+		private static ushort LimitV = Convert.ToUInt16(Letters.Count);
 		/// <summary>Počet znaků v tabulce.</summary>
 		public static ushort Limit
 		{
 			get
 			{
-				return Convert.ToUInt16(Letters.Count);
+				return LimitV;
 			}
 		}
 	}

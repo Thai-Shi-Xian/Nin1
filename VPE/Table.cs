@@ -23,7 +23,10 @@ namespace VPE
 					return NameV;
 				}
 			}
-			set { }
+			set
+			{
+				NameV = value;
+			}
 		}
 
 		public ushort Idx { get; set; }
