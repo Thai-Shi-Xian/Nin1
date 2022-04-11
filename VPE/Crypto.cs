@@ -19,13 +19,14 @@ namespace VPE
 		public string Encypt(string Text)
 		{
 			List<ushort> Working = ConvertToNums(Text); // Pøevod textu na èísla.
-			AddRandomChars(ref Working); // Pøidávám náhodné znaky.
-			VariableShift(ref Working); // Provede jednoduchý posun celé sady.
+			AddRandomChars(ref Working); // Pøidávám náhodné znaky, co se budou šifrovat.
+			OrderShift(ref Working); // Provede jednoduchý posun celé sady podle poøadí znaku v sadì.
 			Swap(ref Working); // Prohodí znaky podle (èásteènì vyplnìné) tabulky.
 			Scramble(ref Working); // Zamíchá znaky postupnì dle tabulek, odrazí a pak zpìtnì dle tabulek.
 			Swap(ref Working);
-			VariableShift(ref Working);
 			ConstantShift(ref Working); // Posune každý znak o konstantu.
+			VariableShift(ref Working); // Posune každý znak o promìnné èíslo závislé na seedu a poøadí.
+			//AddRandomChars(ref Working);
 			return ConvertToString(Working); // Pøevede èísla na text.
 		}
 		/// <summary>Dešifruje text.</summary>
@@ -35,12 +36,13 @@ namespace VPE
 		{
 			List<ushort> Working = ConvertToNums(Text);
 			RemoveRandomChars(ref Working);
-			UnVariableShift(ref Working);
+			UnOrderShift(ref Working);
 			Unswap(ref Working);
 			Unscramble(ref Working);
 			Unswap(ref Working);
-			UnVariableShift(ref Working);
 			UnConstantShift(ref Working);
+			UnVariableShift(ref Working);
+			//RemoveRandomChars(ref Working); // Pøidávám náhodné znaky, nešifrované.
 			return ConvertToString(Working);
 		}
 		/// <summary>Zkonvertuje textovou zprávu na èíselnou reprezentaci podle tabulky znakù.</summary>
@@ -177,24 +179,42 @@ namespace VPE
 		}
 		/// <summary>Posune èísla podle poøadí.</summary>
 		/// <param name="Numbers">Èísla na posunutí.</param>
-		private void VariableShift(ref List<ushort> Numbers)
+		private void OrderShift(ref List<ushort> Numbers)
 		{
-			int temp;
 			for (int i = 0; i < Numbers.Count; i++)
 			{
-				temp = Numbers[i] + i;
-				Numbers[i] = (ushort)(temp % Codepage.Limit);
+				Numbers[i] = (ushort)((Numbers[i] + i) % Codepage.Limit);
 			}
 		}
 		/// <summary>Posune èísla zpìt podle poøadí.</summary>
 		/// <param name="Numbers">Èísla na posunutí zpìt.</param>
+		private void UnOrderShift(ref List<ushort> Numbers)
+		{
+			for (int i = 0; i < Numbers.Count; i++)
+			{
+				Numbers[i] = (ushort)((Numbers[i] - i) % Codepage.Limit);
+			}
+		}
+		/// <summary>Provede promìnný posun èísel.</summary>
+		/// <param name="Numbers">Èísla na posunutí.</param>
+		private void VariableShift (ref List<ushort> Numbers)
+		{
+			uint v, c = Sett.ConstShift > (Codepage.Limit / 2) ? Sett.ConstShift : (uint)(Codepage.Limit - Sett.ConstShift);
+			for (int i = 0; i < Numbers.Count; i++)
+			{
+				v = Numbers[i] + (uint)(Sett.VarShift * (i % c));
+				Numbers[i] = (ushort)(v % Codepage.Limit);
+			}
+		}
+		/// <summary>Provede promìnný posun zpìt èísel.</summary>
+		/// <param name="Numbers">Èísla na posunutí zpìt.</param>
 		private void UnVariableShift(ref List<ushort> Numbers)
 		{
-			int temp;
-			for (ushort i = 0; i < Numbers.Count; i++)
+			uint v, c = Sett.ConstShift > (Codepage.Limit / 2) ? Sett.ConstShift : (uint)(Codepage.Limit - Sett.ConstShift);
+			for (int i = 0; i < Numbers.Count; i++)
 			{
-				temp = Numbers[i] - i;
-				Numbers[i] = (ushort)(temp % Codepage.Limit);
+				v = Numbers[i] - (uint)(Sett.VarShift * (i % c));
+				Numbers[i] = (ushort)(v % Codepage.Limit);
 			}
 		}
 		/// <summary>Dopøedný prùchod 1 znaku všemi tabulkami.</summary>

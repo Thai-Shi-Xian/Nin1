@@ -10,7 +10,7 @@ namespace GUI
 	public class C_UC_Table : INotifyPropertyChanged
 	{
 		private string PozitionV;
-		private List<ushort> TableV = new();
+		private List<uint> RotorsV = new();
 		public string Pozition
 		{
 			get
@@ -27,18 +27,18 @@ namespace GUI
 			}
 		}
 
-		public List<ushort> Table
+		public List<uint> Rotors
 		{
 			get
 			{
-				return TableV;
+				return RotorsV;
 			}
 			set
 			{
-				if (TableV != value)
+				if (RotorsV != value)
 				{
-					TableV = value;
-					OnPropertyChanged("Table");
+					RotorsV = value;
+					OnPropertyChanged("Rotors");
 				}
 			}
 		}
@@ -62,6 +62,7 @@ namespace GUI
 		private string VarShiftStrV;
 		private string RandCharFreqStrV;
 		private string RotorGenCountStrV;
+		private ushort? RotorGenCountNumV;
 		private string SwapGenCountStrV;
 		private string ReflGenCountStrV;
 		public string ConstShiftStr
@@ -162,6 +163,14 @@ namespace GUI
 				if (RotorGenCountStrV != value)
 				{
 					RotorGenCountStrV = value;
+					if (ushort.TryParse(RotorGenCountStrV, out ushort shiftNum))
+					{
+						RotorGenCountNumV = shiftNum;
+					}
+					else
+					{
+						RotorGenCountNumV = null; // Neplatné číslo.
+					}
 					OnPropertyChanged("RotorGenCountStr");
 				}
 			}
@@ -170,14 +179,7 @@ namespace GUI
 		{
 			get
 			{
-				if (ushort.TryParse(RotorGenCountStrV, out ushort shiftNum))
-				{
-					return shiftNum;
-				}
-				else
-				{
-					return null; // Neplatné číslo.
-				}
+				return RotorGenCountNumV;
 			}
 		}
 		public string SwapGenCountStr
@@ -271,11 +273,7 @@ namespace GUI
 		public event PropertyChangedEventHandler PropertyChanged;
 		private void OnPropertyChanged(string info)
 		{
-			PropertyChangedEventHandler handler = PropertyChanged;
-			if (handler != null)
-			{
-				handler(this, new PropertyChangedEventArgs(info));
-			}
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
 		}
 	}
 }

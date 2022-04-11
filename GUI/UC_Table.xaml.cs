@@ -17,15 +17,16 @@ namespace GUI
 		public ushort Pozition { get; private set; }
 		public ushort SelTable { get; private set; }
 
-		private C_UC_Table Representation = new();
+		public C_UC_Table Representation = new();
 		public UC_Table()
 		{
 			InitializeComponent();
 		}
 
-		public void UpdateTableList (List<ushort> tables)
+		public void UpdateTableList (List<uint> tables)
 		{
-			Representation.Table = tables;
+			Representation.Rotors.Clear();
+			Representation.Rotors = tables;
 		}
 
 		private void B_Rand_Shift_Click (object sender, RoutedEventArgs e)

@@ -39,10 +39,13 @@ namespace GUI
 
 		private void B_GenRotors_Click (object sender, RoutedEventArgs e)
 		{
-			VPE?.GenerateRotors ();
-			foreach (UC_Table table in SP_Rotors.Children)
+			if (DataFromGUI.RotorGenCountNum is not null)
 			{
-				
+				VPE?.GenerateRotors(DataFromGUI.RotorGenCountNum.Value);
+				foreach (UC_Table rotor in SP_Rotors.Children)
+				{
+					rotor.UpdateTableList(VPE.Rotors);
+				}
 			}
 		}
 

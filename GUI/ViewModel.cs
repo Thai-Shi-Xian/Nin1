@@ -14,22 +14,26 @@ namespace GUI
 	public class VPE_VM
 	{
 		private Generators Generator = new(Codepage.Limit, DateTime.Now.Ticks);
-		private SettingsStorage SS = new();
-		private Settings S;
-		private Crypto C;
+		public SettingsStorage SS = new();
+		public Settings S;
+		public Crypto C;
 		private const string VPESS_filter = "VPE Settings Storage files (*.vpess)|*.vpess";
 		private const string VPES_filter = "VPE Settings files (*.vpes)|*.vpes";
-		private ushort TableCNTR = 0, ReflCNTR = 0, SwapCNTR = 0;
+		public ushort RotorCNTR = 0, ReflCNTR = 0, SwapCNTR = 0;
+		public List<uint> Rotors = new();
 		public List<ushort> Refls = new();
 		public List<ushort> Swaps = new();
-
+		/// <summary>Vygeneruje rotory.</summary>
+		/// <param name="count">Kolik rotorů?</param>
+		/// <returns>Seznam indexů vygenerovaných.</returns>
 		public void GenerateRotors(uint count = 10)
 		{
+			Generator.UpdateSeed(DateTime.Now.Ticks);
 			for (uint i = 0; i < count; i++)
 			{
-				Generator.UpdateSeed(DateTime.Now.Ticks);
-				SS.Rotors.Add(Generator.GenerateTable(TableCNTR));
-				TableCNTR++;
+				SS.Rotors.Add(Generator.GenerateTable(RotorCNTR));
+				Rotors.Add(RotorCNTR);
+				RotorCNTR++;
 			}
 		}
 

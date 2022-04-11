@@ -76,7 +76,7 @@ namespace VPE
 			t.IsPaired = set[pozition] == 1;
 			pozition++;
 			t.Idx = BitConverter.ToUInt16(set, pozition);
-			pozition += 2;
+			pozition += 4;
 			for (ushort j = 0; j < lim; j++)
 			{
 				t.MainTable.Add(set[pozition]);
@@ -91,7 +91,7 @@ namespace VPE
 			t.IsPaired = set[pozition] == 1;
 			pozition++;
 			t.Idx = BitConverter.ToUInt16(set, pozition);
-			pozition += 2;
+			pozition += 4;
 			for (ushort j = 0; j < lim; j++)
 			{
 				t.MainTable.Add(BitConverter.ToUInt16(set, pozition));

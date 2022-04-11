@@ -29,7 +29,7 @@ namespace VPE
 			}
 		}
 
-		public ushort Idx { get; set; }
+		public uint Idx { get; set; }
 		/// <summary>Vrátí index hodnoty. Vrací 65535 pokud je tabulka prázdná, 65534 pokud neobsahuje hodnotu.</summary>
 		/// <param name="Value">Hodnota.</param>
 		/// <returns>Index, případně kód chyby.</returns>

@@ -35,7 +35,7 @@ namespace VPE
 		/// <summary>Vygeneruje tabulku.</summary>
 		/// <param name="index">Index tabulky, použit jako pseudonázev.</param>
 		/// <returns>Výsledná tabulka.</returns>
-		public Table GenerateTable(ushort index)
+		public Table GenerateTable(uint index)
 		{
 			Table T = new()
 			{
@@ -133,7 +133,7 @@ namespace VPE
 			T.MainTable = Temp.ToList();
 			return T;
 		}
-		/// <summary></summary>
+		/// <summary>Vygeneruje náhodné číslo od 0 do Codepage.Limit.</summary>
 		/// <returns>Náhodné číslo v limitu.</returns>
 		public ushort GenerateNum()
 		{
