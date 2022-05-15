@@ -89,7 +89,7 @@
 				<StackPanel>
 					<StackPanel Orientation="Horizontal">
 						<TextBox x:Name="TB_ConstShift" Text="{Binding Path=ConstShiftStr, Mode=TwoWay}" Width="50" Height="20"/>
-						<Button x:Name="B_ConstShift" Content="Random" HorizontalAlignment="Right" Margin="3" Click="B_GenerateConstShift"/>
+						<Button x:Name="B_ConstShift" Content="Random" HorizontalAlignment="Right" Margin="3" Click="B_GenerateConstShift_Click"/>
 					</StackPanel>
 				</StackPanel>
 			</GroupBox>
@@ -97,7 +97,7 @@
 				<StackPanel>
 					<StackPanel Orientation="Horizontal">
 						<TextBox x:Name="TB_VarShift" Text="{Binding Path=VarShiftStr, Mode=TwoWay}" Width="50" Height="20"/>
-						<Button x:Name="B_VarShift" Content="Random" HorizontalAlignment="Right" Margin="3" Click="B_GenerateVarShift"/>
+						<Button x:Name="B_VarShift" Content="Random" HorizontalAlignment="Right" Margin="3" Click="B_GenerateVarShift_Click"/>
 					</StackPanel>
 				</StackPanel>
 			</GroupBox>
@@ -105,7 +105,7 @@
 				<StackPanel>
 					<StackPanel Orientation="Horizontal">
 						<TextBox x:Name="TB_RndChars" Text="{Binding Path=RandCharFreqStr, Mode=TwoWay}" Width="50" Height="20"/>
-						<Button x:Name="B_RndChars" Content="Random" HorizontalAlignment="Right" Margin="3" Click="B_RandChars"/>
+						<Button x:Name="B_RndChars" Content="Random" HorizontalAlignment="Right" Margin="3" Click="B_RandChars_Click"/>
 					</StackPanel>
 				</StackPanel>
 			</GroupBox>
@@ -134,15 +134,15 @@
 				<StackPanel>
 					<StackPanel Orientation="Horizontal">
 						<Button x:Name="B_GenRotors" Content="Generate tables" Margin="4, 2, 4, 2" MinWidth="112" Click="B_GenRotors_Click"/>
-						<TextBox x:Name="TB_GenRotorsCount" MinWidth="40" Text="{Binding Path=RotorGenCountStr, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Margin="4, 2, 4, 2"/>
+						<TextBox x:Name="TB_GenRotorsCount" MinWidth="40" Text="{Binding Path=RotorGenCountStr, Mode=OneWayToSource}" Margin="4, 2, 4, 2"/>
 					</StackPanel>
 					<StackPanel Orientation="Horizontal">
 						<Button x:Name="B_GenRefl" Content="Generate reflectors" Margin="4, 2, 4, 2" MinWidth="112" Click="B_GenRefl_Click"/>
-						<TextBox x:Name="TB_GenReflsCount" MinWidth="40" Text="{Binding Path=ReflGenCountStr, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Margin="4, 2, 4, 2"/>
+						<TextBox x:Name="TB_GenReflsCount" MinWidth="40" Text="{Binding Path=ReflGenCountStr, Mode=OneWayToSource}" Margin="4, 2, 4, 2"/>
 					</StackPanel>
 					<StackPanel Orientation="Horizontal">
 						<Button x:Name="B_GenSwaps" Content="Generate swaps" Margin="4, 2, 4, 2" MinWidth="112" Click="B_GenSwaps_Click"/>
-						<TextBox x:Name="TB_GenSwapsCount" MinWidth="40" Text="{Binding Path=SwapGenCountStr, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Margin="4, 2, 4, 2"/>
+						<TextBox x:Name="TB_GenSwapsCount" MinWidth="40" Text="{Binding Path=SwapGenCountStr, Mode=OneWayToSource}" Margin="4, 2, 4, 2"/>
 					</StackPanel>
 				</StackPanel>
 			</GroupBox>
@@ -152,7 +152,7 @@
 						<RowDefinition Height="1*"/>
 						<RowDefinition Height="30 px"/>
 					</Grid.RowDefinitions>
-					<Button x:Name="B_All_RND" Grid.Row="0" Content="All settings random" HorizontalAlignment="Left" VerticalAlignment="Top" Click="B_Submit_Click" Margin="4"/>
+					<Button x:Name="B_All_RND" Grid.Row="0" Content="All settings random" HorizontalAlignment="Left" VerticalAlignment="Top" Click="B_AllRandom_Click" Margin="4"/>
 					<Button x:Name="B_Submit" Grid.Row="1" Content="Submit" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="B_Submit_Click" Margin="2" Height="25px" Width="100px"/>
 				</Grid>
 			</GroupBox>

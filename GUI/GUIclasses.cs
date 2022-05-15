@@ -11,6 +11,7 @@ namespace GUI
 	{
 		private string PozitionV;
 		private List<uint> RotorsV = new();
+		public uint SelectedR { get; set; }
 		public string Pozition
 		{
 			get

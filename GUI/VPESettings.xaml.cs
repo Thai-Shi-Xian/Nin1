@@ -32,7 +32,7 @@ namespace GUI
 		}
 		#region GUI eventy
 		private void B_Submit_Click (object sender, RoutedEventArgs e)
-		{ // ToDo: This whole method is just one big to do.
+		{ // ToDo: Everything.
 			
 			Close ();
 		}
@@ -46,6 +46,16 @@ namespace GUI
 				{
 					rotor.UpdateTableList(VPE.Rotors);
 				}
+				return;
+			}
+			if (ushort.TryParse(TB_GenRotorsCount.Text, out ushort count))
+			{
+				VPE?.GenerateRotors(count);
+				foreach (UC_Table rotor in SP_Rotors.Children)
+				{
+					rotor.UpdateTableList(VPE.Rotors);
+				}
+				return;
 			}
 		}
 
@@ -120,17 +130,21 @@ namespace GUI
 			VPE.LoadAndMerge();
 		}
 
-		private void B_GenerateConstShift(object sender, RoutedEventArgs e)
+		private void B_GenerateConstShift_Click(object sender, RoutedEventArgs e)
 		{
 			VPE?.GenerateRandNum();
 		}
 
-		private void B_GenerateVarShift(object sender, RoutedEventArgs e)
+		private void B_GenerateVarShift_Click(object sender, RoutedEventArgs e)
 		{
 			VPE?.GenerateRandNum();
 		}
 
-		private void B_RandChars(object sender, RoutedEventArgs e)
+		private void B_RandChars_Click(object sender, RoutedEventArgs e)
+		{
+			VPE?.GenerateRandNum();
+		}
+		private void B_AllRandom_Click(object sender, RoutedEventArgs e)
 		{
 			VPE?.GenerateRandNum();
 		}

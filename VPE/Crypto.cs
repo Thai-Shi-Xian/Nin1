@@ -285,37 +285,33 @@ namespace VPE
 				}
 			}
 		}
-		/// <summary>Vypoèítá frekvenci vkládání náhodných znakù, jak velké mají být mezery mezi náhodnými znaky.</summary>
-		/// <returns>Velikost mezery.</returns>
-		private ushort CalculateRandomFrequency ()
-		{
-			ushort Frequency = Sett.ConstShift;
-			while (Frequency < (Codepage.Limit / 2) + 1)
-			{
-				Frequency = Convert.ToUInt16 (Math.Pow(Frequency, 2) % Codepage.Limit);
-			}
-			return Frequency;
-		}
 		/// <summary>Pøidá náhodné znaky do sady.</summary>
 		/// <param name="Numbers">Sada.</param>
 		private void AddRandomChars(ref List<ushort> Numbers)
 		{
 			Generators Gen = new (Codepage.Limit, DateTime.Now.Ticks);
-			ushort Space = CalculateRandomFrequency();
-			for (int i = Sett.ConstShift; i <= Numbers.Count; i += Space)
-			{
-				Numbers.Insert(i, Gen.GenerateNum());
-			}
+			
 		}
 		/// <summary>Odebere náhodné znaky ze sady.</summary>
 		/// <param name="Numbers">Sada.</param>
 		private void RemoveRandomChars(ref List<ushort> Numbers)
 		{
-			ushort Space = CalculateRandomFrequency();
-			for (int i = Sett.ConstShift; i <= Numbers.Count; i += Space)
-			{
-				Numbers.RemoveAt(i);
-			}
+			
+		}
+		/// <summary>Generuje èísla podle zadané eliptické køivky. Y^2 = X^3 - AX + B. Èíslo pak modulo dìlí a posouvá.</summary>
+		/// <param name="seed">Pøedchozí hodnota X.</param>
+		/// <param name="A">A parametr rovnice.</param>
+		/// <param name="B">B parametr rovnice.</param>
+		/// <param name="from">Minimální hodnota (posun).</param>
+		/// <param name="count">Èíslo na modulo dìlení.</param>
+		private uint ElipticNumGen  (uint seed, uint A, uint B, uint from, uint count)
+		{
+			double yp = Math.Sqrt(Math.Pow(seed, 3) - A * seed + B);
+			double yn = -yp;
+			double slopep = (3 * Math.Pow(seed, 2) - A) / (2 * Math.Sqrt(Math.Pow(seed, 3) - A * seed + B));
+			double slopen = -slopep;
+
+			return 0;
 		}
 	}
 }
