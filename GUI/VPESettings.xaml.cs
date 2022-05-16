@@ -29,6 +29,7 @@ namespace GUI
 		{
 			InitializeComponent ();
 			VPE = VModel;
+			//DataContext = DataFromGUI;
 		}
 		#region GUI eventy
 		private void B_Submit_Click (object sender, RoutedEventArgs e)
@@ -42,15 +43,6 @@ namespace GUI
 			if (DataFromGUI.RotorGenCountNum is not null)
 			{
 				VPE?.GenerateRotors(DataFromGUI.RotorGenCountNum.Value);
-				foreach (UC_Table rotor in SP_Rotors.Children)
-				{
-					rotor.UpdateTableList(VPE.Rotors);
-				}
-				return;
-			}
-			if (ushort.TryParse(TB_GenRotorsCount.Text, out ushort count))
-			{
-				VPE?.GenerateRotors(count);
 				foreach (UC_Table rotor in SP_Rotors.Children)
 				{
 					rotor.UpdateTableList(VPE.Rotors);
@@ -132,21 +124,21 @@ namespace GUI
 
 		private void B_GenerateConstShift_Click(object sender, RoutedEventArgs e)
 		{
-			VPE?.GenerateRandNum();
+			DataFromGUI.ConstShiftStr = VPE?.GenerateRandNum().ToString();
 		}
 
 		private void B_GenerateVarShift_Click(object sender, RoutedEventArgs e)
 		{
-			VPE?.GenerateRandNum();
+			DataFromGUI.VarShiftStr = VPE?.GenerateRandNum().ToString();
 		}
 
 		private void B_RandChars_Click(object sender, RoutedEventArgs e)
 		{
-			VPE?.GenerateRandNum();
+			DataFromGUI.RandCharFreqStr = VPE?.GenerateRandNum().ToString();
 		}
 		private void B_AllRandom_Click(object sender, RoutedEventArgs e)
 		{
-			VPE?.GenerateRandNum();
+			
 		}
 		#endregion
 	}

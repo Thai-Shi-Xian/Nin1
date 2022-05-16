@@ -47,11 +47,7 @@ namespace GUI
 		public event PropertyChangedEventHandler PropertyChanged;
 		private void OnPropertyChanged(string info)
 		{
-			PropertyChangedEventHandler handler = PropertyChanged;
-			if (handler != null)
-			{
-				handler(this, new PropertyChangedEventArgs(info));
-			}
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
 		}
 	}
 
