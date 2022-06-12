@@ -2,16 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using static Factorizator.PrimeList;
 
 namespace VPE
 {
 	public class Crypto
 	{
 		private Settings Sett;
+		private decimal[] Constants;
 
 		public Crypto(Settings S)
 		{
 			Sett = S;
+			Constants = FindConstants();
 		}
 		/// <summary>Zašifruje text.</summary>
 		/// <param name="Text">Text na zašifrování.</param>
@@ -26,7 +29,7 @@ namespace VPE
 			Swap(ref Working);
 			ConstantShift(ref Working); // Posune každý znak o konstantu.
 			VariableShift(ref Working); // Posune každý znak o promìnné èíslo závislé na seedu a poøadí.
-			//AddRandomChars(ref Working);
+			AddRandomChars(ref Working); // Pøidávám náhodné znaky, znovu, nešifrované.
 			return ConvertToString(Working); // Pøevede èísla na text.
 		}
 		/// <summary>Dešifruje text.</summary>
@@ -42,7 +45,7 @@ namespace VPE
 			Unswap(ref Working);
 			UnConstantShift(ref Working);
 			UnVariableShift(ref Working);
-			//RemoveRandomChars(ref Working); // Pøidávám náhodné znaky, nešifrované.
+			RemoveRandomChars(ref Working);
 			return ConvertToString(Working);
 		}
 		/// <summary>Zkonvertuje textovou zprávu na èíselnou reprezentaci podle tabulky znakù.</summary>
@@ -290,28 +293,60 @@ namespace VPE
 		private void AddRandomChars(ref List<ushort> Numbers)
 		{
 			Generators Gen = new (Codepage.Limit, DateTime.Now.Ticks);
-			
+			int index = (Sett.RandCharSpcMin + Sett.RandCharSpcMax) % 2; // Inicializace indexu, kam budu pøidávat náhodný znak.
+			Numbers.Insert(index, Gen.GenerateNum()); // Pøidám náhodný znak, na 0. nebo 1. pozici podle sudosti/lichosti souètu minima a maxima rozsahù mezer.
+			int gap = Sett.RandCharSpcMax - Sett.RandCharSpcMin; // Velikost rozsahu mezery.
+			decimal space = (Math.Floor(Codepage.Limit / (decimal)gap) % gap) + Sett.RandCharSpcMin; // Inicializace mezery. V jádru „náhodný“ výpoèet, pak dání do rozsahu a posunutí o minimum.
+			while (index <= Numbers.Count)
+			{
+				IncrementSpace(ref index, ref space, gap);
+				Numbers.Insert(index, Gen.GenerateNum());
+			}
 		}
 		/// <summary>Odebere náhodné znaky ze sady.</summary>
 		/// <param name="Numbers">Sada.</param>
 		private void RemoveRandomChars(ref List<ushort> Numbers)
 		{
-			
+			int index = (Sett.RandCharSpcMin + Sett.RandCharSpcMax) % 2;
+			Numbers.RemoveAt(index);
+			int gap = Sett.RandCharSpcMax - Sett.RandCharSpcMin;
+			decimal space = (Math.Floor(Codepage.Limit / (decimal)gap) % gap) + Sett.RandCharSpcMin;
+			while (index <= Numbers.Count)
+			{
+				IncrementSpace(ref index, ref space, gap);
+				Numbers.RemoveAt(index);
+			}
 		}
-		/// <summary>Generuje èísla podle zadané eliptické køivky. Y^2 = X^3 - AX + B. Èíslo pak modulo dìlí a posouvá.</summary>
-		/// <param name="seed">Pøedchozí hodnota X.</param>
-		/// <param name="A">A parametr rovnice.</param>
-		/// <param name="B">B parametr rovnice.</param>
-		/// <param name="from">Minimální hodnota (posun).</param>
-		/// <param name="count">Èíslo na modulo dìlení.</param>
-		private uint ElipticNumGen  (uint seed, uint A, uint B, uint from, uint count)
+		/// <summary>Inkrementuje index o novou pseudonáhodnou mezeru.</summary>
+		/// <param name="index">Pøedchozí index.</param>
+		/// <param name="space">Pøedchozí mezera.</param>
+		/// <param name="gap">Rozsah velikosti mezery.</param>
+		private void IncrementSpace (ref int index, ref decimal space, int gap)
 		{
-			double yp = Math.Sqrt(Math.Pow(seed, 3) - A * seed + B);
-			double yn = -yp;
-			double slopep = (3 * Math.Pow(seed, 2) - A) / (2 * Math.Sqrt(Math.Pow(seed, 3) - A * seed + B));
-			double slopen = -slopep;
-
-			return 0;
+			space = (Constants[0] * space + Constants[1]) % Constants[2];
+			index += (int)((space % gap) + Sett.RandCharSpcMin);
+		}
+		/// <summary>Vypoèítá konstanty podle indexù prvoèísel.</summary>
+		/// <returns>Pole konstant: 0: A, 1: B, 2: M.</returns>
+		private decimal[] FindConstants()
+		{
+			decimal[] result = new decimal [3];
+			result[0] = Sett.RandCharA[0];
+			result[1] = Sett.RandCharB[0];
+			result[2] = Sett.RandCharM[0];
+			for (int i = 1; i < Sett.RandCharA.Count; i++)
+			{
+				result[0] *= Sett.RandCharA[i];
+			}
+			for (int i = 1; i < Sett.RandCharB.Count; i++)
+			{
+				result[1] *= Sett.RandCharB[i];
+			}
+			for (int i = 1; i < Sett.RandCharM.Count; i++)
+			{
+				result[2] *= Sett.RandCharM[i];
+			}
+			return result;
 		}
 	}
 }

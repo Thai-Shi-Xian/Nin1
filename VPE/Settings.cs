@@ -72,8 +72,10 @@ namespace VPE
 
 		internal Table Single_TableFromBytes(byte[] set, ref int pozition, ushort lim)
 		{
-			Table t = new();
-			t.IsPaired = set[pozition] == 1;
+			Table t = new()
+			{
+				IsPaired = set[pozition] == 1
+			};
 			pozition++;
 			t.Idx = BitConverter.ToUInt16(set, pozition);
 			pozition += 4;
@@ -87,8 +89,10 @@ namespace VPE
 
 		internal Table Double_TableFromBytes(byte[] set, ref int pozition, ushort lim)
 		{
-			Table t = new();
-			t.IsPaired = set[pozition] == 1;
+			Table t = new()
+			{
+				IsPaired = set[pozition] == 1
+			};
 			pozition++;
 			t.Idx = BitConverter.ToUInt16(set, pozition);
 			pozition += 4;
@@ -108,13 +112,18 @@ namespace VPE
 		public Table Reflector { get; set; }
 		public ushort ConstShift { get; set; }
 		public ushort VarShift { get; set; }
-		public ushort RandCharSeed { get; set; }
+		public ushort RandCharSpcMin { get; set; }
+		public ushort RandCharSpcMax { get; set; }
+		public List<ushort> RandCharA { get; set; }
+		public List<ushort> RandCharB { get; set; }
+		public List<ushort> RandCharM { get; set; }
 
 		public Settings ()
 		{
 
 		}
-
+		/// <summary>Vytvoří novou instanci třídy na základě načtených dat.</summary>
+		/// <param name="file">Data ze souboru, co ukládá tuto třídu.</param>
 		public Settings (byte[] file)
 		{
 			if (file == null)
@@ -125,6 +134,11 @@ namespace VPE
 			{
 				return;
 			}
+			Rotors = new List<Table> ();
+			Swaps = new List<Table> ();
+			RandCharA = new List<ushort>();
+			RandCharB = new List<ushort>();
+			RandCharM = new List<ushort>();
 			if (file[0] == 1)
 			{
 				Double_ByteDecode(file);
@@ -134,7 +148,7 @@ namespace VPE
 				Single_ByteDecode(file);
 			}
 		}
-
+		/// <summary>Převede celou instanci třídy na pole bytů.</summary>
 		public byte[] ToBytes ()
 		{
 			List<byte> result = new(65536);
@@ -150,41 +164,75 @@ namespace VPE
 			}
 			return result.ToArray();
 		}
-		
+		/// <summary>Převede většinu třídy na pole bytů, počítá s počtem znaků méně jak 256, čísla jsou ukládány jako 1 byt.</summary>
+		/// <param name="set">Sada bytů, kam budu přidávat a kterou budu měnit.</param>
 		private void Single_ByteConv(ref List<byte> set)
 		{
+			List<byte[]> common = Common_ByteConv();
 			set.Add((byte)Codepage.Limit);
-			set.AddRange(BitConverter.GetBytes(Rotors.Count));
+			set.AddRange(common[0]);
 			set.AddRange(Single_TablesToBytes(Rotors));
 			foreach (ushort poz in Pozitions)
 			{
 				set.Add((byte)poz);
 			}
 			set.AddRange(Single_TableToBytes(Reflector));
-			set.AddRange(BitConverter.GetBytes(Swaps.Count));
+			set.AddRange(common[1]);
 			set.AddRange(Single_TablesToBytes(Swaps));
 			set.Add((byte)ConstShift);
 			set.Add((byte)VarShift);
-			set.AddRange(BitConverter.GetBytes(RandCharSeed));
+			set.AddRange(common[2]);
 		}
-
+		/// <summary>Převede většinu třídy na pole bytů, počítá s počtem znaků více jak 255, čísla jsou ukládány jako 2 byty.</summary>
+		/// <param name="set">Sada bytů, kam budu přidávat a kterou budu měnit.</param>
 		private void Double_ByteConv(ref List<byte> set)
 		{
+			List<byte[]> common = Common_ByteConv();
 			set.AddRange(BitConverter.GetBytes(Codepage.Limit));
-			set.AddRange(BitConverter.GetBytes(Rotors.Count));
+			set.AddRange(common[0]);
 			set.AddRange(Double_TablesToBytes(Rotors));
 			foreach (ushort poz in Pozitions)
 			{
 				set.AddRange(BitConverter.GetBytes(poz));
 			}
 			set.AddRange(Double_TableToBytes(Reflector));
-			set.AddRange(BitConverter.GetBytes(Swaps.Count));
+			set.AddRange(common[1]);
 			set.AddRange(Double_TablesToBytes(Swaps));
 			set.AddRange(BitConverter.GetBytes(ConstShift));
 			set.AddRange(BitConverter.GetBytes(VarShift));
-			set.AddRange(BitConverter.GetBytes(RandCharSeed));
+			set.AddRange(common[2]);
 		}
-
+		/// <summary>Společná část převodu na pole bytů.</summary>
+		/// <returns>3 části: 0: počet rotorů, 1: počet swapů, 2: zbytek na konci souboru.</returns>
+		private List<byte[]> Common_ByteConv()
+		{
+			List<byte[]> result = new()
+			{
+				BitConverter.GetBytes(Rotors.Count),
+				BitConverter.GetBytes(Swaps.Count),
+			};
+			List<byte> temp = new();
+			temp.AddRange(BitConverter.GetBytes(RandCharSpcMin));
+			temp.AddRange(BitConverter.GetBytes(RandCharSpcMax));
+			temp.AddRange(BitConverter.GetBytes(RandCharA.Count));
+			foreach (ushort num in RandCharA)
+			{
+				temp.AddRange(BitConverter.GetBytes(num));
+			}
+			temp.AddRange(BitConverter.GetBytes(RandCharB.Count));
+			foreach (ushort num in RandCharB)
+			{
+				temp.AddRange(BitConverter.GetBytes(num));
+			}
+			temp.AddRange(BitConverter.GetBytes(RandCharM.Count));
+			foreach (ushort num in RandCharM)
+			{
+				temp.AddRange(BitConverter.GetBytes(num));
+			}
+			return result;
+		}
+		/// <summary>Přečte informace z bytového pole a uloží je do současné instance třídy. Počítá s počtem znaků menším než 256.</summary>
+		/// <param name="set">Zdrojové bytové pole.</param>
 		private void Single_ByteDecode(byte[] set)
 		{
 			int pozition = 1;
@@ -207,9 +255,10 @@ namespace VPE
 			pozition++;
 			VarShift = set[pozition];
 			pozition++;
-			RandCharSeed = BitConverter.ToUInt16(set, pozition);
+			Common_ByteDecode(set, pozition);
 		}
-
+		/// <summary>Přečte informace z bytového pole a uloží je do současné instance třídy. Počítá s počtem znaků větším než 255.</summary>
+		/// <param name="set">Zdrojové bytové pole.</param>
 		private void Double_ByteDecode(byte[] set)
 		{
 			int pozition = 1;
@@ -232,7 +281,38 @@ namespace VPE
 			pozition += 2;
 			VarShift = BitConverter.ToUInt16(set, pozition);
 			pozition += 2;
-			RandCharSeed = BitConverter.ToUInt16(set, pozition);
+			Common_ByteDecode(set, pozition);
+		}
+		/// <summary>Společná funkcionalita pro čtení informací z bytového pole. Obsluhuje konec souboru.</summary>
+		/// <param name="set">Zdrojové bytové pole.</param>
+		/// <param name="pozition">Pozice, kde začíná část obsluhovaná touto metodou.</param>
+		private void Common_ByteDecode (byte[] set, int pozition)
+		{
+			RandCharSpcMin = BitConverter.ToUInt16(set, pozition);
+			pozition += 2;
+			RandCharSpcMax = BitConverter.ToUInt16(set, pozition);
+			pozition += 2;
+			int count = BitConverter.ToInt32(set, pozition);
+			pozition += 4;
+			for (int i = 0; i < count; i++)
+			{
+				RandCharA.Add(BitConverter.ToUInt16(set, pozition));
+				pozition += 2;
+			}
+			count = BitConverter.ToInt32(set, pozition);
+			pozition += 4;
+			for (int i = 0; i < count; i++)
+			{
+				RandCharB.Add(BitConverter.ToUInt16(set, pozition));
+				pozition += 2;
+			}
+			count = BitConverter.ToInt32(set, pozition);
+			pozition += 4;
+			for (int i = 0; i < count; i++)
+			{
+				RandCharM.Add(BitConverter.ToUInt16(set, pozition));
+				pozition += 2;
+			}
 		}
 	}
 	/// <summary>Ukládá množiny tabulek.</summary>

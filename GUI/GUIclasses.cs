@@ -57,7 +57,8 @@ namespace GUI
 		private List<ushort> ReflsV = new();
 		private string ConstShiftStrV;
 		private string VarShiftStrV;
-		private string RandCharFreqStrV;
+		private string RandCharSpcMinV;
+		private string RandCharSpcMaxV;
 		private string RotorGenCountStrV;
 		private ushort? RotorGenCountNumV;
 		private string SwapGenCountStrV;
@@ -120,26 +121,55 @@ namespace GUI
 				}
 			}
 		}
-		public string RandCharFreqStr
+		public string RandCharSpcMin
 		{
 			get
 			{
-				return RandCharFreqStrV;
+				return RandCharSpcMinV;
 			}
 			set
 			{
-				if (RandCharFreqStrV != value)
+				if (RandCharSpcMinV != value)
 				{
-					RandCharFreqStrV = value;
-					OnPropertyChanged("RandCharFreqStr");
+					RandCharSpcMinV = value;
+					OnPropertyChanged("RandCharSpcMin");
 				}
 			}
 		}
-		public ushort? RandCharFreqNum
+		public ushort? RandCharSpcMinNum
 		{
 			get
 			{
-				if (ushort.TryParse(RandCharFreqStrV, out ushort shiftNum))
+				if (ushort.TryParse(RandCharSpcMinV, out ushort shiftNum))
+				{
+					return shiftNum;
+				}
+				else
+				{
+					return null; // Neplatné číslo.
+				}
+			}
+		}
+		public string RandCharSpcMax
+		{
+			get
+			{
+				return RandCharSpcMaxV;
+			}
+			set
+			{
+				if (RandCharSpcMaxV != value)
+				{
+					RandCharSpcMaxV = value;
+					OnPropertyChanged("RandCharSpcMax");
+				}
+			}
+		}
+		public ushort? RandCharSpcMaxNum
+		{
+			get
+			{
+				if (ushort.TryParse(RandCharSpcMaxV, out ushort shiftNum))
 				{
 					return shiftNum;
 				}

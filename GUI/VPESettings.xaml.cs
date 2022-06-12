@@ -132,9 +132,9 @@ namespace GUI
 			DataFromGUI.VarShiftStr = VPE?.GenerateRandNum().ToString();
 		}
 
-		private void B_RandChars_Click(object sender, RoutedEventArgs e)
+		private void B_RandCharSpc_Click(object sender, RoutedEventArgs e)
 		{
-			DataFromGUI.RandCharFreqStr = VPE?.GenerateRandNum().ToString();
+			DataFromGUI.RandCharSpcMin = VPE?.GenerateRandNum().ToString();
 		}
 		private void B_AllRandom_Click(object sender, RoutedEventArgs e)
 		{

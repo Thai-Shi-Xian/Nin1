@@ -102,12 +102,23 @@
 				</StackPanel>
 			</GroupBox>
 			<GroupBox Grid.Row="3" Header="Frequency of random chars">
-				<StackPanel>
-					<StackPanel Orientation="Horizontal">
-						<TextBox x:Name="TB_RndChars" Text="{Binding Path=RandCharFreqStr, Mode=TwoWay}" Width="50" Height="20"/>
-						<Button x:Name="B_RndChars" Content="Random" HorizontalAlignment="Right" Margin="3" Click="B_RandChars_Click"/>
-					</StackPanel>
-				</StackPanel>
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="30px"/>
+						<RowDefinition Height="30px"/>
+						<RowDefinition Height="1*"/>
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="70px"/>
+						<ColumnDefinition Width="50px"/>
+						<ColumnDefinition Width="1*"/>
+					</Grid.ColumnDefinitions>
+					<TextBlock Grid.Row="0" Grid.Column="0" Text="Min space:" Margin="4"/>
+					<TextBox Grid.Row="0" Grid.Column="1" x:Name="TB_RndCharsSpcMin" Text="{Binding Path=RandCharSpcMin, Mode=TwoWay}" Width="40" Height="20"/>
+					<TextBlock Grid.Row="1" Grid.Column="0" Text="Max space:" Margin="4"/>
+					<TextBox Grid.Row="1" Grid.Column="1" x:Name="TB_RndCharsSpcMax" Text="{Binding Path=RandCharSpcMax, Mode=TwoWay}" Width="40" Height="20"/>
+					<Button Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" x:Name="B_RndCharsSpc" Content="Random" Margin="3" Click="B_RandCharSpc_Click"/>
+				</Grid>
 			</GroupBox>
 		</Grid>
 		<Grid Grid.Column="3">
