@@ -122,6 +122,16 @@ namespace GUI
 			VPE.LoadAndMerge();
 		}
 
+		private void B_Exp_Click(object sender, RoutedEventArgs e)
+		{
+			VPE?.SaveSpecific();
+		}
+
+		private void B_Imp_Click(object sender, RoutedEventArgs e)
+		{
+			VPE?.LoadSpecific();
+		}
+
 		private void B_GenerateConstShift_Click(object sender, RoutedEventArgs e)
 		{
 			DataFromGUI.ConstShiftStr = VPE?.GenerateRandNum().ToString();

@@ -137,8 +137,8 @@
 			</GroupBox>
 			<GroupBox Grid.Row="1" Header="Current settings">
 				<StackPanel>
-					<Button x:Name="B_Export_Current" Content="Export current settings to a file" Margin="4, 4, 4, 2"/>
-					<Button x:Name="B_Import_Current" Content="Import settings from a file" Margin="4, 2, 4, 4"/>
+					<Button x:Name="B_Export_Current" Content="Export current settings to a file" Click="B_Exp_Click" Margin="4, 4, 4, 2"/>
+					<Button x:Name="B_Import_Current" Content="Import settings from a file" Click="B_Imp_Click" Margin="4, 2, 4, 4"/>
 				</StackPanel>
 			</GroupBox>
 			<GroupBox Grid.Row="2" Header="Generators">

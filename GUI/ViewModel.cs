@@ -91,7 +91,7 @@ namespace GUI
 			string folder = GetFolder(SaveFile(VPES_filter));
 			if (folder != "N/A")
 			{
-				FileHandling.Save(SS, folder);
+				FileHandling.Save(S, folder);
 			}
 		}
 
