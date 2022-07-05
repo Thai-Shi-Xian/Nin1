@@ -35,7 +35,7 @@
 					<TextBlock Grid.Column="0" Text="Rotor"/>
 					<TextBlock Grid.Column="1" Text="Pozition"/>
 				</Grid>
-				<StackPanel x:Name="SP_Rotors" Grid.Row="1" Orientation="Vertical">
+				<StackPanel x:Name="SP_Rotors" Grid.Row="1" Orientation="Vertical" CanVerticallyScroll="True">
 					<local:UC_Table x:Name="UCT_0"/>
 					<local:UC_Table x:Name="UCT_1"/>
 					<local:UC_Table x:Name="UCT_2"/>
@@ -78,7 +78,7 @@
 				<RowDefinition Height="55 px"/>
 				<RowDefinition Height="1*"/>
 				<RowDefinition Height="1*"/>
-				<RowDefinition Height="1*"/>
+				<RowDefinition Height="3*"/>
 			</Grid.RowDefinitions>
 			<GroupBox Grid.Row="0" Header="Reflector">
 				<StackPanel>
@@ -101,7 +101,7 @@
 					</StackPanel>
 				</StackPanel>
 			</GroupBox>
-			<GroupBox Grid.Row="3" Header="Frequency of random chars">
+			<GroupBox Grid.Row="3" Header="Random chars">
 				<Grid>
 					<Grid.RowDefinitions>
 						<RowDefinition Height="30px"/>
@@ -118,6 +118,11 @@
 					<TextBlock Grid.Row="1" Grid.Column="0" Text="Max space:" Margin="4"/>
 					<TextBox Grid.Row="1" Grid.Column="1" x:Name="TB_RndCharsSpcMax" Text="{Binding Path=RandCharSpcMax, Mode=TwoWay}" Width="40" Height="20"/>
 					<Button Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" x:Name="B_RndCharsSpc" Content="Random" Margin="3" Click="B_RandCharSpc_Click"/>
+					<StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
+						<TextBox Margin="3"/>
+						<TextBox Margin="3"/>
+						<TextBox Margin="3"/>
+					</StackPanel>
 				</Grid>
 			</GroupBox>
 		</Grid>

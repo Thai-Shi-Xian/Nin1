@@ -331,21 +331,7 @@ namespace VPE
 		private decimal[] FindConstants()
 		{
 			decimal[] result = new decimal [3];
-			result[0] = Sett.RandCharA[0];
-			result[1] = Sett.RandCharB[0];
-			result[2] = Sett.RandCharM[0];
-			for (int i = 1; i < Sett.RandCharA.Count; i++)
-			{
-				result[0] *= Sett.RandCharA[i];
-			}
-			for (int i = 1; i < Sett.RandCharB.Count; i++)
-			{
-				result[1] *= Sett.RandCharB[i];
-			}
-			for (int i = 1; i < Sett.RandCharM.Count; i++)
-			{
-				result[2] *= Sett.RandCharM[i];
-			}
+			
 			return result;
 		}
 	}

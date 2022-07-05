@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Factorizator;
 
 namespace VPE
 {
@@ -72,8 +73,8 @@ namespace VPE
 			Table T = new()
 			{
 				Idx = index,
+				IsPaired = true
 			};
-			T.IsPaired = true;
 			ushort[] Temp = new ushort[Codepage.Limit];
 			List<ushort> Remains = new();
 			for (ushort u = 0; u < Limit; u++)
@@ -105,8 +106,8 @@ namespace VPE
 			Table T = new()
 			{
 				Idx = index,
+				IsPaired = true
 			};
-			T.IsPaired = true;
 			ushort[] Temp = new ushort[Codepage.Limit];
 			List<ushort> Remains = new();
 			for (ushort u = 0; u < Limit; u++)
@@ -138,6 +139,60 @@ namespace VPE
 		public ushort GenerateNum()
 		{
 			return Convert.ToUInt16(R.Next(Limit));
+		}
+
+		public decimal[] GenerateABM()
+		{
+			decimal[] result = {1, 1, 1};
+			List<uint> AMprimes = new()
+			{
+				PrimeList.Primes[R.Next(0, 30)],
+				PrimeList.Primes[R.Next(30, 169)],
+				PrimeList.Primes[R.Next(169, 2653)],
+			};
+			List<uint> Bprimes = new();
+			bool run = true;
+			uint num;
+			byte count = 0;
+			while (run)
+			{
+				num = PrimeList.Primes[R.Next(0, 9592)];
+				if (!AMprimes.Contains(num))
+				{
+					Bprimes.Add(num);
+					count++;
+				}
+				run = count > 5;
+			}
+			List<byte> Aexps = new(), Mexps = new();
+			byte exp;
+			for (byte i = 0; i < 3; i++)
+			{
+				exp = (byte)R.Next(1, 5);
+				Mexps.Add(exp);
+				if (exp > 2)
+				{
+					Aexps.Add(2);
+				}
+				else
+				{
+					Aexps.Add(1);
+				}
+			}
+			for (byte i = 0; i < 3; i++)
+			{
+				result[0] *= (decimal)Math.Pow(AMprimes[i], Aexps[i]);
+			}
+			result[0]++;
+			for (byte i = 0; i < 5; i++)
+			{
+				result[1] *= Bprimes[i];
+			}
+			for (byte i = 0; i < 3; i++)
+			{
+				result[2] *= (decimal)Math.Pow(AMprimes[i], Mexps[i]);
+			}
+			return result;
 		}
 	}
 }

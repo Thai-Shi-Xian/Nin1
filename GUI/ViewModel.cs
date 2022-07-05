@@ -132,8 +132,10 @@ namespace GUI
 		private string SaveFile(string ext)
 		{
 			string path = "N/A";
-			SaveFileDialog SFD = new();
-			SFD.Filter = ext;
+			SaveFileDialog SFD = new()
+			{
+				Filter = ext
+			};
 			bool? dia = SFD.ShowDialog();
 			if (dia is not null)
 			{

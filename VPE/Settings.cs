@@ -28,8 +28,10 @@ namespace VPE
 
 		internal List<byte> Single_TableToBytes(Table t)
 		{
-			List<byte> result = new();
-			result.Add(t.IsPaired ? (byte)1 : (byte)0);
+			List<byte> result = new()
+			{
+				t.IsPaired ? (byte)1 : (byte)0
+			};
 			result.AddRange(BitConverter.GetBytes(t.Idx));
 			foreach (ushort item in t.MainTable)
 			{
@@ -40,8 +42,10 @@ namespace VPE
 
 		internal List<byte> Double_TableToBytes(Table t)
 		{
-			List<byte> result = new();
-			result.Add(t.IsPaired ? (byte)1 : (byte)0);
+			List<byte> result = new()
+			{
+				t.IsPaired ? (byte)1 : (byte)0
+			};
 			result.AddRange(BitConverter.GetBytes(t.Idx));
 			foreach (ushort item in t.MainTable)
 			{
@@ -103,6 +107,33 @@ namespace VPE
 			}
 			return t;
 		}
+
+		internal byte[] DecimalToBytes (decimal number)
+		{
+			byte[] result = new byte[16];
+			int[] temp = decimal.GetBits(number);
+			int i = 0;
+			foreach (int t in temp)
+			{
+				byte[] b = BitConverter.GetBytes(t);
+				for (byte j = 0; j < 4; j++)
+				{
+					result[i++] = b[j];
+				}
+			}
+			return result;
+		}
+
+		internal decimal DecimalFromBytes(byte[] set, ref int pozition)
+		{
+			int[] temp = new int[4];
+			for (int i = 0; i < 4; i++)
+			{
+				temp[i] = BitConverter.ToInt32(set, pozition);
+				pozition += 4;
+			}
+			return new decimal(temp);
+		}
 	}
 	public class Settings : Settings_Base
 	{
@@ -114,9 +145,9 @@ namespace VPE
 		public ushort VarShift { get; set; }
 		public ushort RandCharSpcMin { get; set; }
 		public ushort RandCharSpcMax { get; set; }
-		public List<ushort> RandCharA { get; set; }
-		public List<ushort> RandCharB { get; set; }
-		public List<ushort> RandCharM { get; set; }
+		public decimal RandCharConstA { get; set; }
+		public decimal RandCharConstB { get; set; }
+		public decimal RandCharConstM { get; set; }
 
 		public Settings ()
 		{
@@ -136,9 +167,6 @@ namespace VPE
 			}
 			Rotors = new List<Table> ();
 			Swaps = new List<Table> ();
-			RandCharA = new List<ushort>();
-			RandCharB = new List<ushort>();
-			RandCharM = new List<ushort>();
 			if (file[0] == 1)
 			{
 				Double_ByteDecode(file);
@@ -214,21 +242,9 @@ namespace VPE
 			List<byte> temp = new();
 			temp.AddRange(BitConverter.GetBytes(RandCharSpcMin));
 			temp.AddRange(BitConverter.GetBytes(RandCharSpcMax));
-			temp.AddRange(BitConverter.GetBytes(RandCharA.Count));
-			foreach (ushort num in RandCharA)
-			{
-				temp.AddRange(BitConverter.GetBytes(num));
-			}
-			temp.AddRange(BitConverter.GetBytes(RandCharB.Count));
-			foreach (ushort num in RandCharB)
-			{
-				temp.AddRange(BitConverter.GetBytes(num));
-			}
-			temp.AddRange(BitConverter.GetBytes(RandCharM.Count));
-			foreach (ushort num in RandCharM)
-			{
-				temp.AddRange(BitConverter.GetBytes(num));
-			}
+			temp.AddRange(DecimalToBytes(RandCharConstA));
+			temp.AddRange(DecimalToBytes(RandCharConstB));
+			temp.AddRange(DecimalToBytes(RandCharConstM));
 			return result;
 		}
 		/// <summary>Přečte informace z bytového pole a uloží je do současné instance třídy. Počítá s počtem znaků menším než 256.</summary>
@@ -292,27 +308,9 @@ namespace VPE
 			pozition += 2;
 			RandCharSpcMax = BitConverter.ToUInt16(set, pozition);
 			pozition += 2;
-			int count = BitConverter.ToInt32(set, pozition);
-			pozition += 4;
-			for (int i = 0; i < count; i++)
-			{
-				RandCharA.Add(BitConverter.ToUInt16(set, pozition));
-				pozition += 2;
-			}
-			count = BitConverter.ToInt32(set, pozition);
-			pozition += 4;
-			for (int i = 0; i < count; i++)
-			{
-				RandCharB.Add(BitConverter.ToUInt16(set, pozition));
-				pozition += 2;
-			}
-			count = BitConverter.ToInt32(set, pozition);
-			pozition += 4;
-			for (int i = 0; i < count; i++)
-			{
-				RandCharM.Add(BitConverter.ToUInt16(set, pozition));
-				pozition += 2;
-			}
+			RandCharConstA = DecimalFromBytes(set, ref pozition);
+			RandCharConstB = DecimalFromBytes(set, ref pozition);
+			RandCharConstM = DecimalFromBytes(set, ref pozition);
 		}
 	}
 	/// <summary>Ukládá množiny tabulek.</summary>
